@@ -1,5 +1,5 @@
-@import "tailwindcss";
-@import "tw-animate-css";
+@import 'tailwindcss';
+@import 'tw-animate-css';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -119,5 +119,15 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@layer utilities {
+  .btn-3d-red {
+    @apply bg-red-700/90 shadow-[0_5px_0_#7F1D1D,0_6px_15px_rgba(127,29,29,0.45)] transition-all flex items-center gap-2 hover:bg-red-700/90 hover:-translate-y-1 hover:shadow-[0_7px_0_#7F1D1D,0_10px_25px_rgba(127,29,29,0.55)] active:translate-y-px active:shadow-[0_2px_0_#7F1D1D,0_3px_5px_rgba(127,29,29,0.35)];
+  }
+
+  .btn-3d-white {
+    @apply bg-white/90 transition-all flex items-center gap-2 shadow-[0_5px_0_#E5E7EB,0_6px_15px_rgba(0,0,0,0.10)] hover:-translate-y-1 hover:bg-white/90 hover:shadow-[0_7px_0_#E5E7EB,0_10px_25px_rgba(0,0,0,0.25)] active:translate-y-px active:shadow-[0_2px_0_#E5E7EB,0_3px_5px_rgba(0,0,0,0.12)];
   }
 }

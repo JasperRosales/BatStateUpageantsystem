@@ -1,22 +1,44 @@
-import { pgTable, serial, varchar, text, timestamp } from 'drizzle-orm/pg-core';
+import { pgTable, serial, varchar, timestamp, integer, text } from 'drizzle-orm/pg-core';
 
 export const users = pgTable('users', {
   id: serial('id').primaryKey(),
-  email: varchar('email', { length: 255 }).notNull().unique(),
+  username: varchar('username', { length: 255 }).notNull().unique(),
   password: varchar('password', { length: 255 }).notNull(),
-  role: varchar('role', { length: 50 }).default('user').notNull(),
-  refreshToken: text('refresh_token'),
-  refreshTokenExpiresAt: timestamp('refresh_token_expires_at'),
+  role: varchar('role', { length: 50 }).notNull().default('organizer'),
   createdAt: timestamp('created_at').defaultNow().notNull(),
-  updatedAt: timestamp('updated_at').defaultNow().notNull(),
 });
 
-export const otps = pgTable('otps', {
+export const participants = pgTable('participants', {
   id: serial('id').primaryKey(),
-  email: varchar('email', { length: 255 }).notNull(),
-  code: varchar('code', { length: 10 }).notNull(),
-  purpose: varchar('purpose', { length: 50 }).notNull().default('password_reset'),
-  expiresAt: timestamp('expires_at').notNull(),
+  number: integer('number').notNull().unique(),
+  fullname: varchar('fullname', { length: 255 }).notNull(),
+  role: varchar('role', { length: 50 }).notNull().default('MR'),
+  note: text('note'),
   createdAt: timestamp('created_at').defaultNow().notNull(),
 });
+
+export const scores = pgTable('scores', {
+  id: serial('id').primaryKey(),
+  participantId: integer('participant_id')
+    .notNull()
+    .references(() => participants.id),
+  segmentId: integer('segment_id')
+    .notNull()
+    .references(() => segments.id),
+  score: integer('score').notNull(),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+});
+
+export const segments = pgTable('segments', {
+  id: serial('id').primaryKey(),
+  event: varchar('event', { length: 255 }).notNull(),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+});
+
+export default {
+  users,
+  participants,
+  scores,
+  segments,
+};
 
