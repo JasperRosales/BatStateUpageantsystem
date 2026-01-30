@@ -150,7 +150,6 @@ export const participantService = {
         throw new ParticipantError("Participant ID is required", "INVALID_ID");
       }
 
-      // Validate fields if provided
       if (data.role !== undefined) {
         validateRole(data.role);
       }
@@ -158,7 +157,6 @@ export const participantService = {
         validateNumber(data.number);
       }
 
-      // Check for duplicate number if number is being updated
       if (data.number) {
         const existing = await getParticipantByNumber(data.number);
         if (existing && existing.id !== id) {
@@ -210,7 +208,6 @@ export const participantService = {
   async getStats() {
     try {
       const all = await getAllParticipants();
-      // Handle null/undefined safely
       const participants = all || [];
       const mr = participants.filter((c) => c.role === "MR");
       const ms = participants.filter((c) => c.role === "MS");
@@ -228,6 +225,5 @@ export const participantService = {
   },
 };
 
-// Export validation helpers for external use
 export { validateRequiredFields, validateRole, validateNumber, VALID_ROLES };
 

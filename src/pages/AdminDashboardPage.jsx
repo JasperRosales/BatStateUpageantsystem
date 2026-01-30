@@ -2,6 +2,7 @@ import { useState } from "react";
 import { AdminHeader } from "@/components/admin/AdminHeader";
 import { AdminTabs } from "@/components/admin/AdminTabs";
 import { ContestantsPanel } from "@/components/admin/ContestantsPanel";
+import { JudgesPanel } from "@/components/admin/JudgesPanel";
 
 export function AdminDashboardPage({ onLogout }) {
   const [activeTab, setActiveTab] = useState("contestants");
@@ -11,14 +12,7 @@ export function AdminDashboardPage({ onLogout }) {
       case "contestants":
         return <ContestantsPanel />;
       case "judges":
-        return (
-          <div className="bg-card border border-border rounded-lg p-6">
-            <h3 className="text-lg font-semibold mb-2">Judges</h3>
-            <p className="text-muted-foreground">
-              Manage judges (placeholder)
-            </p>
-          </div>
-        );
+        return <JudgesPanel />;
       case "categories":
         return (
           <div className="bg-card border border-border rounded-lg p-6">
