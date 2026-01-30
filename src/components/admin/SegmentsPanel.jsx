@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { StatsCard } from "@/components/shared/StatsCard";
-import { SegmentList } from "@/components/shared/SegmentList";
-import { SegmentModal } from "@/components/shared/SegmentModal";
-import { ViewSegmentModal } from "@/components/shared/ViewSegmentModal";
-import { DeleteSegmentModal } from "@/components/shared/DeleteSegmentModal";
+import { SegmentList } from "@/components/fragments/SegmentList";
+import { SegmentModal } from "@/components/fragments/SegmentModal";
+import { ViewSegmentModal } from "@/components/fragments/ViewSegmentModal";
+import { DeleteSegmentModal } from "@/components/fragments/DeleteSegmentModal";
 import { segmentService } from "@/services/segment.service";
 
 export function SegmentsPanel() {

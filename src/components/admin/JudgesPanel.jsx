@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { StatsCard } from "@/components/shared/StatsCard";
-import { JudgeList } from "@/components/shared/JudgeList";
-import { JudgeModal } from "@/components/shared/JudgeModal";
-import { ViewJudgeModal } from "@/components/shared/ViewJudgeModal";
-import { DeleteJudgeModal } from "@/components/shared/DeleteJudgeModal";
+import { JudgeList } from "@/components/fragments/JudgeList";
+import { JudgeModal } from "@/components/fragments/JudgeModal";
+import { ViewJudgeModal } from "@/components/fragments/ViewJudgeModal";
+import { DeleteJudgeModal } from "@/components/fragments/DeleteJudgeModal";
 import { userService } from "@/services/user.service";
 
 export function JudgesPanel() {

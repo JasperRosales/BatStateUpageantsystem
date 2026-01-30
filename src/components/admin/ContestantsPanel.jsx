@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { StatsCard } from "@/components/shared/StatsCard";
-import { ContestantList } from "@/components/shared/ContestantList";
-import { ContestantModal } from "@/components/shared/ContestantModal";
-import { ViewContestantModal } from "@/components/shared/ViewContestantModal";
-import { DeleteConfirmationModal } from "@/components/shared/DeleteConfirmationModal";
+import { ContestantList } from "@/components/fragments/ContestantList";
+import { ContestantModal } from "@/components/fragments/ContestantModal";
+import { ViewContestantModal } from "@/components/fragments/ViewContestantModal";
+import { DeleteConfirmationModal } from "@/components/fragments/DeleteConfirmationModal";
 import { participantService } from "@/services/participant.service";
 
 export function ContestantsPanel() {
