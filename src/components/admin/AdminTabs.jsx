@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 const tabs = [
   { id: "contestants", label: "Contestants" },
   { id: "judges", label: "Judges" },
-  { id: "categories", label: "Categories" },
+  { id: "segments", label: "Segments" },
   { id: "scoring", label: "Scoring" },
   { id: "results", label: "Results" },
 ];

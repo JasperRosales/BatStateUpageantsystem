@@ -3,6 +3,7 @@ import { AdminHeader } from "@/components/admin/AdminHeader";
 import { AdminTabs } from "@/components/admin/AdminTabs";
 import { ContestantsPanel } from "@/components/admin/ContestantsPanel";
 import { JudgesPanel } from "@/components/admin/JudgesPanel";
+import { SegmentsPanel } from "@/components/admin/SegmentsPanel";
 
 export function AdminDashboardPage({ onLogout }) {
   const [activeTab, setActiveTab] = useState("contestants");
@@ -13,15 +14,8 @@ export function AdminDashboardPage({ onLogout }) {
         return <ContestantsPanel />;
       case "judges":
         return <JudgesPanel />;
-      case "categories":
-        return (
-          <div className="bg-card border border-border rounded-lg p-6">
-            <h3 className="text-lg font-semibold mb-2">Categories</h3>
-            <p className="text-muted-foreground">
-              Configure scoring categories (placeholder)
-            </p>
-          </div>
-        );
+      case "segments":
+        return <SegmentsPanel />;
       case "scoring":
         return (
           <div className="bg-card border border-border rounded-lg p-6">
