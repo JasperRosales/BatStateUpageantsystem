@@ -1,0 +1,1 @@
+ALTER TABLE "criteria" ADD COLUMN "name" varchar(255) DEFAULT 'Criteria' NOT NULL;

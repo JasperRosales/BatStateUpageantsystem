@@ -22,9 +22,12 @@ export const scores = pgTable('scores', {
   participantId: integer('participant_id')
     .notNull()
     .references(() => participants.id),
-  segmentId: integer('segment_id')
+  criteriaId: integer('criteria_id')
     .notNull()
-    .references(() => segments.id),
+    .references(() => criteria.id),
+  userId: integer('user_id')
+    .notNull()
+    .references(() => users.id),
   score: integer('score').notNull(),
   createdAt: timestamp('created_at').defaultNow().notNull(),
 });
@@ -35,10 +38,21 @@ export const segments = pgTable('segments', {
   createdAt: timestamp('created_at').defaultNow().notNull(),
 });
 
+export const criteria = pgTable('criteria', {
+  id: serial('id').primaryKey(),
+  segmentId: integer('segment_id')
+    .notNull()
+    .references(() => segments.id),
+  name: varchar('name', { length: 255 }).notNull().default('Criteria'),
+  maxscore: integer('max_score').notNull().default(100),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+});
+
 export default {
   users,
   participants,
   scores,
   segments,
+  criteria,
 };
 

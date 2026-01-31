@@ -7,7 +7,7 @@ export function DeleteSegmentModal({ isOpen, onClose, onConfirm, segment, isDele
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
       <div className="bg-background rounded-xl shadow-lg max-w-md w-full p-6 animate-in fade-in zoom-in duration-200">
-        <div flex-col items-center className="flex text-center mb-6">
+        <div className="flex flex-col items-center text-center mb-6">
           <div className="w-16 h-16 rounded-full bg-destructive/10 flex items-center justify-center mb-4">
             <AlertTriangle className="size-8 text-destructive" />
           </div>
@@ -16,7 +16,7 @@ export function DeleteSegmentModal({ isOpen, onClose, onConfirm, segment, isDele
             Are you sure you want to delete segment <strong>{segment.event}</strong>?
           </p>
           <p className="text-sm text-muted-foreground mt-2">
-            This action cannot be undone. All scores associated with this segment will also be affected.
+            This will also delete all associated criteria and scores. This action cannot be undone.
           </p>
         </div>
 

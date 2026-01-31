@@ -6,6 +6,8 @@ import {
   updateSegment,
   deleteSegment,
 } from "@/repository/segmentRepository";
+import { deleteCriteriaBySegmentId } from "@/repository/criteriaRepository";
+import { deleteScoresByCriteriaId } from "@/repository/scoreRepository";
 
 const validateEventName = (event) => {
   if (event !== undefined && event !== null) {
@@ -154,6 +156,15 @@ export const segmentService = {
       if (!id) {
         throw new SegmentError("Segment ID is required", "INVALID_ID");
       }
+
+      const { getCriteriaBySegmentId } = await import("@/repository/criteriaRepository");
+      const criteriaList = await getCriteriaBySegmentId(id);
+
+      for (const criterion of criteriaList) {
+        await deleteScoresByCriteriaId(criterion.id);
+      }
+
+      await deleteCriteriaBySegmentId(id);
 
       const deleted = await deleteSegment(id);
       if (!deleted) {

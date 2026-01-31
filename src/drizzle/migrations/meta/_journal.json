@@ -5,8 +5,22 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1769782395617,
-      "tag": "0000_sudden_moonstone",
+      "when": 1769851576342,
+      "tag": "0000_colorful_the_professor",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1769852538667,
+      "tag": "0001_strong_edwin_jarvis",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1769853587872,
+      "tag": "0002_perpetual_hellfire_club",
       "breakpoints": true
     }
   ]

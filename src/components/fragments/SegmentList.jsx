@@ -24,7 +24,7 @@ export function SegmentList({ segments, onEdit, onDelete, onView }) {
               <div className="flex items-center gap-1">
                 <button
                   onClick={() => onView && onView(segment)}
-                  className="p-2 rounded-md hover:bg-muted transition-colors text-muted-foreground hover:text-blue-600"
+                  className="p-2 rounded-md hover:bg-muted transition-colors text-muted-foreground hover:text-black"
                   title="View segment"
                 >
                   <svg
@@ -44,7 +44,7 @@ export function SegmentList({ segments, onEdit, onDelete, onView }) {
                 </button>
                 <button
                   onClick={() => onEdit(segment)}
-                  className="p-2 rounded-md hover:bg-muted transition-colors text-muted-foreground hover:text-blue-600"
+                  className="p-2 rounded-md hover:bg-muted transition-colors text-muted-foreground hover:text-black"
                   title="Edit segment"
                 >
                   <svg

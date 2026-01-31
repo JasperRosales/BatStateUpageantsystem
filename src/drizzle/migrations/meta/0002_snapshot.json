@@ -1,6 +1,6 @@
 {
-  "id": "9b4cd3ea-d94b-4922-a5ba-c5c000cf5f41",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "133d37ef-d1d7-49c4-9fa2-35453f9e84ff",
+  "prevId": "c5fa7a2f-d10f-467b-9e94-6dc27b41e177",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -19,6 +19,20 @@
           "type": "integer",
           "primaryKey": false,
           "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'Criteria'"
+        },
+        "max_score": {
+          "name": "max_score",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 100
         },
         "created_at": {
           "name": "created_at",

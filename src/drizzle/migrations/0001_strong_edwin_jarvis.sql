@@ -1,0 +1,1 @@
+ALTER TABLE "criteria" ADD COLUMN "max_score" integer DEFAULT 100 NOT NULL;

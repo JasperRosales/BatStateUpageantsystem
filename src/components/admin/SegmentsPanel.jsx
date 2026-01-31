@@ -6,6 +6,7 @@ import { SegmentModal } from "@/components/fragments/SegmentModal";
 import { ViewSegmentModal } from "@/components/fragments/ViewSegmentModal";
 import { DeleteSegmentModal } from "@/components/fragments/DeleteSegmentModal";
 import { segmentService } from "@/services/segment.service";
+import { criteriaService } from "@/services/criteriaService";
 
 export function SegmentsPanel() {
   const [segments, setSegments] = useState([]);
@@ -17,8 +18,12 @@ export function SegmentsPanel() {
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [selectedSegment, setSelectedSegment] = useState(null);
+  const [selectedSegmentCriteria, setSelectedSegmentCriteria] = useState([]);
   const [isDeleting, setIsDeleting] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [pendingCriteria, setPendingCriteria] = useState([]);
+  const [editModeCriteria, setEditModeCriteria] = useState([]);
+  const [criteriaToDelete, setCriteriaToDelete] = useState([]);
 
   const fetchSegments = async () => {
     try {
@@ -41,16 +46,35 @@ export function SegmentsPanel() {
 
   const handleAddClick = () => {
     setSelectedSegment(null);
+    setPendingCriteria([]);
     setIsAddModalOpen(true);
   };
 
-  const handleViewClick = (segment) => {
+  const handleViewClick = async (segment) => {
     setSelectedSegment(segment);
+    try {
+      const criteria = await criteriaService.getBySegmentId(segment.id);
+      setSelectedSegmentCriteria(criteria || []);
+    } catch (err) {
+      console.error("Failed to load criteria:", err);
+      setSelectedSegmentCriteria([]);
+    }
     setIsViewModalOpen(true);
   };
 
-  const handleEditClick = (segment) => {
+  const handleEditClick = async (segment) => {
     setSelectedSegment(segment);
+    setPendingCriteria([]);
+    setCriteriaToDelete([]);
+    
+    try {
+      const criteria = await criteriaService.getBySegmentId(segment.id);
+      setEditModeCriteria(criteria || []);
+    } catch (err) {
+      console.error("Failed to load criteria:", err);
+      setEditModeCriteria([]);
+    }
+    
     setIsEditModalOpen(true);
   };
 
@@ -62,9 +86,21 @@ export function SegmentsPanel() {
   const handleAddSubmit = async (data) => {
     try {
       setIsSubmitting(true);
-      await segmentService.create(data);
+      const newSegment = await segmentService.create(data);
+      
+      if (pendingCriteria.length > 0) {
+        for (const criteria of pendingCriteria) {
+          await criteriaService.create({
+            segmentId: newSegment.id,
+            name: criteria.name,
+            maxscore: criteria.maxscore,
+          });
+        }
+      }
+      
       await fetchSegments();
       setIsAddModalOpen(false);
+      setPendingCriteria([]);
     } catch (err) {
       setError(err.message || "Failed to add segment");
       console.error(err);
@@ -73,19 +109,74 @@ export function SegmentsPanel() {
     }
   };
 
+  const handleAddCriteria = (criteriaData) => {
+    const newCriteria = {
+      ...criteriaData,
+      _tempId: Date.now() + Math.random(),
+    };
+    setPendingCriteria((prev) => [...prev, newCriteria]);
+  };
+
+  const handleRemovePendingCriteria = (index) => {
+    setPendingCriteria((prev) => prev.filter((_, i) => i !== index));
+  };
+
   const handleEditSubmit = async (data) => {
     try {
       setIsSubmitting(true);
+      
       await segmentService.update(selectedSegment.id, data);
+      
+      for (const criteria of criteriaToDelete) {
+        if (criteria.id) {
+          await criteriaService.delete(criteria.id);
+        }
+      }
+      
+      for (const criteria of editModeCriteria) {
+        if (criteria._updated) {
+          await criteriaService.update(criteria.id, {
+            name: criteria.name,
+            maxscore: criteria.maxscore,
+          });
+        }
+      }
+      
+      for (const criteria of pendingCriteria) {
+        await criteriaService.create({
+          segmentId: selectedSegment.id,
+          name: criteria.name,
+          maxscore: criteria.maxscore,
+        });
+      }
+      
       await fetchSegments();
       setIsEditModalOpen(false);
       setSelectedSegment(null);
+      setEditModeCriteria([]);
+      setPendingCriteria([]);
+      setCriteriaToDelete([]);
     } catch (err) {
       setError(err.message || "Failed to update segment");
       console.error(err);
     } finally {
       setIsSubmitting(false);
     }
+  };
+
+  const handleEditCriteria = (updatedCriteria) => {
+    setEditModeCriteria((prev) =>
+      prev.map((c) =>
+        c.id === updatedCriteria.id ? { ...c, ...updatedCriteria, _updated: true } : c
+      )
+    );
+  };
+
+  const handleDeleteExistingCriteria = (criteria) => {
+    if (criteria.id) {
+      setCriteriaToDelete((prev) => [...prev, criteria]);
+    }
+    setEditModeCriteria((prev) => prev.filter((c) => (c.id || c._tempId) !== (criteria.id || criteria._tempId)));
   };
 
   const handleDeleteConfirm = async () => {
@@ -153,9 +244,15 @@ export function SegmentsPanel() {
 
       <SegmentModal
         isOpen={isAddModalOpen}
-        onClose={() => setIsAddModalOpen(false)}
+        onClose={() => {
+          setIsAddModalOpen(false);
+          setPendingCriteria([]);
+        }}
         onSubmit={handleAddSubmit}
         isSubmitting={isSubmitting}
+        onAddCriteria={handleAddCriteria}
+        pendingCriteria={pendingCriteria}
+        onRemovePendingCriteria={handleRemovePendingCriteria}
       />
 
       <SegmentModal
@@ -163,10 +260,18 @@ export function SegmentsPanel() {
         onClose={() => {
           setIsEditModalOpen(false);
           setSelectedSegment(null);
+          setEditModeCriteria([]);
+          setPendingCriteria([]);
+          setCriteriaToDelete([]);
         }}
         onSubmit={handleEditSubmit}
         segment={selectedSegment}
         isSubmitting={isSubmitting}
+        segmentCriteria={editModeCriteria}
+        onAddCriteria={handleAddCriteria}
+        onEditCriteria={handleEditCriteria}
+        onDeleteCriteria={handleDeleteExistingCriteria}
+        onRemovePendingCriteria={handleRemovePendingCriteria}
       />
 
       <ViewSegmentModal
@@ -174,8 +279,10 @@ export function SegmentsPanel() {
         onClose={() => {
           setIsViewModalOpen(false);
           setSelectedSegment(null);
+          setSelectedSegmentCriteria([]);
         }}
         segment={selectedSegment}
+        criteria={selectedSegmentCriteria}
       />
 
       <DeleteSegmentModal

@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 
-export function ViewSegmentModal({ isOpen, onClose, segment }) {
+export function ViewSegmentModal({ isOpen, onClose, segment, criteria = [] }) {
   if (!isOpen || !segment) return null;
 
   return (
@@ -55,6 +55,38 @@ export function ViewSegmentModal({ isOpen, onClose, segment }) {
               </span>
             </div>
           </div>
+
+          {criteria.length > 0 && (
+            <div className="border-t pt-4">
+              <h4 className="text-sm font-medium mb-3">Criteria ({criteria.length})</h4>
+              <div className="space-y-2">
+                {criteria.map((criterion) => (
+                  <div
+                    key={criterion.id}
+                    className="flex items-center justify-between gap-3 p-2 bg-muted/50 rounded-lg"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-full bg-red-700/20 flex items-center justify-center text-sm font-medium text-red-700">
+                        {criterion.name.charAt(0).toUpperCase()}
+                      </div>
+                      <span className="text-sm font-medium">{criterion.name}</span>
+                    </div>
+                    <span className="text-xs bg-red-700/10 text-red-700 px-2 py-1 rounded">
+                      Max: {criterion.maxscore}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {criteria.length === 0 && (
+            <div className="border-t pt-4">
+              <p className="text-sm text-muted-foreground text-center py-2">
+                No criteria added yet for this segment
+              </p>
+            </div>
+          )}
 
           <div className="flex gap-3 pt-4">
             <Button

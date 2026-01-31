@@ -2,9 +2,11 @@ import { useState } from "react";
 import { ShieldIcon } from "@/components/shared/ShieldIcon";
 import { RoleCard } from "@/components/shared/RoleCard";
 import { LoginModal } from "@/components/shared/LoginModal";
+import { JudgeLoginModal } from "@/components/shared/JudgeLoginModal";
 
-export function HomePage({ onLogin }) {
-  const [showLogin, setShowLogin] = useState(false);
+export function HomePage({ onAdminLogin, onJudgeLogin }) {
+  const [showAdminLogin, setShowAdminLogin] = useState(false);
+  const [showJudgeLogin, setShowJudgeLogin] = useState(false);
 
   const adminBullets = [
     "Manage contestants and judges",
@@ -40,13 +42,13 @@ export function HomePage({ onLogin }) {
             subtitle="Full system access and management"
             bullets={adminBullets}
             primary
-            onClick={() => setShowLogin(true)}
+            onClick={() => setShowAdminLogin(true)}
           />
           <RoleCard
             title="Judge Panel"
             subtitle="Scoring and evaluation interface"
             bullets={judgeBullets}
-            onClick={() => alert("Judge panel not implemented in this demo")}
+            onClick={() => setShowJudgeLogin(true)}
           />
         </div>
       </main>
@@ -55,10 +57,17 @@ export function HomePage({ onLogin }) {
         © 2026 Batangas State University - The NEU Balayan
       </footer>
 
-      {showLogin && (
+      {showAdminLogin && (
         <LoginModal
-          onClose={() => setShowLogin(false)}
-          onSuccess={onLogin}
+          onClose={() => setShowAdminLogin(false)}
+          onSuccess={onAdminLogin}
+        />
+      )}
+
+      {showJudgeLogin && (
+        <JudgeLoginModal
+          onClose={() => setShowJudgeLogin(false)}
+          onSuccess={onJudgeLogin}
         />
       )}
     </div>
